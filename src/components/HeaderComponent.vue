@@ -3,12 +3,11 @@
         <h1>BOOLFLIX</h1>
         
     <div class="search">
-        <input type="text" placeholder="Cosa volgio Guardare?">
+        <input  @keyup.enter="$emit('singleText',filterText)" v-model="filterText" type="text" placeholder="Cosa volgio Guardare?">
+        <button @click="$emit('singleText',filterText)"> CERCA </button>
     </div>
         
     </header>
-
-    
     
 </template>
 
@@ -17,6 +16,7 @@ export default {
     name: 'HeaderComponent',
     data(){
         return{
+            filterText:''  
             
         }
     }
@@ -39,6 +39,15 @@ header{
 
         input{
             padding: 5px;
+            outline: none;
+        }
+
+        button{
+            background-color: black;
+            color: red;
+            padding: 5px;
+            margin-left: 3px;
+            border: 1px solid red;
         }
     }
 }
