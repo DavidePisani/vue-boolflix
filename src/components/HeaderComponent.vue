@@ -3,12 +3,12 @@
         <h1>BOOLFLIX</h1>
         
     <div class="search">
-        <input  @keyup.enter="$emit('singleText',filterText)" v-model="filterText" type="text" placeholder="Cosa volgio Guardare?">
-        <button @click="$emit('singleText',filterText)"> CERCA </button>
+        <input  @keyup.enter="$emit('FilmsText',filterText),$emit('SeriesText',filterText)" v-model="filterText" type="text" placeholder="Cosa volgio Guardare?">
+        <button @click="$emit('FilmsText',filterText),$emit('SeriesText',filterText) "> CERCA </button>
     </div>
         
     </header>
-    
+
 </template>
 
 <script>

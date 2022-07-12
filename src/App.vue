@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <HeaderComponent @singleText="UserText"/>
+    <HeaderComponent @FilmsText="UserFilmText" @SeriesText="UserSeriesText"/>
     <main>
-      <MainComponent :ArrayWatch="infoVideo"/>
+      <MainComponent :ArrayFilm="infoFilms" :ArraySeries="infoSeries"/>
     </main>
    
   </div>
@@ -25,24 +25,40 @@ export default {
         return{
             SearchText:'',
             SearchFinalText:'',
-            url: 'https://api.themoviedb.org/3/search/movie?api_key=9b421e8c12233512d2be3ddc9ba136cd&language=it-IT&query=',
-            infoVideo:[],
-            SearchUrl:'',
+            urlFilms: 'https://api.themoviedb.org/3/search/movie?api_key=9b421e8c12233512d2be3ddc9ba136cd&language=it-IT&query=',
+            infoFilms:[],
+            SearchUrlFilms:'',
+            urlSeries: 'https://api.themoviedb.org/3/search/tv?api_key=9b421e8c12233512d2be3ddc9ba136cd&language=it-IT&query=',
+            infoSeries:[],
+            SearchUrlSeries:'',
+            
         }
     },
 
     methods:{
-      UserText(text){
+      UserFilmText(text){
           this.SearchText = text;
           this.SearchFinalText = this.SearchText.split(' ').join('+');
-          this.SearchUrl = this.url + this.SearchFinalText;
+          this.SearchUrlFilms = this.urlFilms + this.SearchFinalText;
 
-            axios.get(this.SearchUrl).then((result)=> {
-              this.infoVideo = result.data.results
-              console.log(this.infoVideo)
-      })
+            axios.get(this.SearchUrlFilms).then((result)=> {
+              this.infoFilms = result.data.results
+              console.log(this.infoFilms)
+            })
       },
-  
+
+      UserSeriesText(text){
+          this.SearchText = text;
+          this.SearchFinalText = this.SearchText.split(' ').join('+');
+          this.SearchUrlSeries = this.urlSeries + this.SearchFinalText;
+
+            axios.get(this.SearchUrlSeries).then((result)=> {
+              this.infoSeries = result.data.results
+              console.log(this.infoSeries)
+            })
+      },
+
+      
 
     }
   }
