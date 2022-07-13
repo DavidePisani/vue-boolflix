@@ -29,10 +29,13 @@ header{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 80px;
 
     h1{
         color: red;
-        padding: 20px;
+        padding: 10px;
+        padding-left: 30px;
+        font-size: 60px;
     }
     .search{
         padding:30px;

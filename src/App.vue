@@ -36,6 +36,7 @@ export default {
     },
 
     methods:{
+      //testo con + al posto dello spazio e chiamata alle API dei films 
       UserFilmText(text){
           this.SearchText = text;
           this.SearchFinalText = this.SearchText.split(' ').join('+');
@@ -46,7 +47,7 @@ export default {
               console.log(this.infoFilms)
             })
       },
-
+  //testo con + al posto dello spazio e chiamata alle API delle series 
       UserSeriesText(text){
           this.SearchText = text;
           this.SearchFinalText = this.SearchText.split(' ').join('+');
@@ -66,5 +67,7 @@ export default {
 
 <style lang="scss">
 @import './assets/style/common';
-
+  main{
+    height: calc(100vh - 80px);
+  }
 </style>
