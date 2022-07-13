@@ -3,8 +3,9 @@
     <h2>FILMS</h2>
     <div class="categories">
         <!-- CARD FILM -->
-        <div class="card" v-for="film, index in ArrayFilm " :key= "'f' + index">
-            <img :src="'https:image.tmdb.org/t/p/w780' + film.poster_path" :alt="film.title">
+        <div class="card" v-for="film, index in ArrayFilm " :key= "'f' + index" >
+            <img v-if=" film.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + film.poster_path" :alt="film.title">
+            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="film.title">
             <div class="card-info">
                 <h3>{{film.title}}</h3>
                 <div>{{film.original_title}}</div>
@@ -17,11 +18,12 @@
     <h2>SERIES</h2>
     <div class="categories">
                 <!-- CARD SERIES -->
-        <div class="card" v-for="series, index in ArraySeries " :key= "'s' + index">
-            <img :src="'https:image.tmdb.org/t/p/w780' + series.poster_path" :alt="series.name">
+        <div  class="card" v-for="series, index in ArraySeries " :key= "'s' + index">
+            <img v-if=" series.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + series.poster_path" :alt="series.name">
+            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="series.name">
             <div class="card-info">
                 <h3>{{series.name}}</h3>
-                <div>{{series.original_title}}</div>
+                <div>{{series.original_name}}</div>
                 <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(series.original_language)" :alt="series.original_language">
                 <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(series.vote_average)}  "></i></div>
                 <div class="overview">Trama: {{series.overview}}</div>
@@ -65,15 +67,12 @@ export default {
             return RightFlag = "sc";
         }
         return RightFlag
-
      },
-    // dato il voto lo divido per 2 in modo tale da poter far comparire al massimo 5 stelline
-     VoteWithStar(star){
-        const StarVote = star/2
-        return Math.round(StarVote)
-        
-     },
-
+        // dato il voto lo divido per 2 in modo tale da poter far comparire al massimo 5 stelline
+        VoteWithStar(star){
+            const StarVote = star/2
+            return Math.round(StarVote)   
+        },
     }
 }
 </script>
@@ -102,8 +101,8 @@ export default {
 
             .card{
                 width: calc((100% / 7) - 10px);
-                margin: 5px;
-                background-color: white;
+                margin-right: 10px;
+                margin-bottom: 5px;
                 flex-shrink: 0;
                 aspect-ratio: 2/3;
                 position: relative;
@@ -146,7 +145,4 @@ export default {
             }
         }
     }
-    
-    
-
 </style>

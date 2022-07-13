@@ -51,6 +51,7 @@ header{
             padding: 5px;
             margin-left: 3px;
             border: 1px solid red;
+            cursor: pointer;
         }
     }
 }
