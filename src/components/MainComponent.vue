@@ -9,7 +9,10 @@
             <div @mouseenter="GetCast(element.id)" class="card-info">
                 <h3>{{element.title}}</h3>
                 <div>{{element.original_title}}</div>
-                <div v-for="name, index in CastArray " :key="index">{{name}}</div>
+                <div>Cast:</div>
+                <div v-if="castArray.length === 5">
+                    <span class="cast" v-for="name, index in castArray " :key="index">{{name}},</span>
+                </div>
                 <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(element.original_language)" :alt="element.original_language">
                 <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(element.vote_average)}  "></i></div>
                 <div>Trama: {{element.overview}}</div>
@@ -36,19 +39,27 @@
 </template>
 
 <script>
-    import axios from 'axios'
+
+import axios from 'axios'
+
 export default {
     name:'MainComponent',
     props:{
         ArrayFilm: Array,
-        ArraySeries: Array
+        ArraySeries: Array,
+        
     },
 
     data(){
         return{
-            CastArray:[]
+            castArray:[]
         }
     },
+
+    computed:{
+        
+    },
+    
 
     methods:{
         // funzione per modificare alcune iniziali della lingua 
@@ -82,26 +93,30 @@ export default {
             return Math.round(StarVote)   
         },
 
-        GetCast(identify){
-            this.CastArray = [];
+         GetCast(identify){
+            this.castArray = [];
             axios.get(`https://api.themoviedb.org/3/movie/${identify}/credits?api_key=9b421e8c12233512d2be3ddc9ba136cd&language=it-It`).then(response => {
-                if(response.data.cast.length >= 5){
-                     for(let i = 0; i < 5; i++){
-                        this.CastArray.push(response.data.cast[i].name);
+                 if(response.data.cast.length >= 5){
+                    for(let i = 0; i < 5; i++){
+                       this.castArray.push(response.data.cast[i].name);
                     }
-                     console.log('ciclo for 1') 
+                    console.log(this.castArray)
                 }else if(response.data.cast.length <= 4){
                     for(let i = 0; i < response.data.cast.length; i++){
-                        this.CastArray.push(response.data.cast[i].name);
+                        this.castArray.push(response.data.cast[i].name);
                     }
-                    console.log('ciclo for 2') 
+                    console.log('ciclo for 2');
                 }else{
-                    this.CastArray.push("no cast found");
-                }
-                    this.CastArray;
-            })
-        }
-    }
+                    this.castArray.push("no cast found");
+                }   
+            })  
+            return this.castArray; 
+        },
+
+       
+
+        
+    }  
 }
 </script>
 
@@ -111,6 +126,7 @@ export default {
     width: 90%;
     height: 100%;
     margin: 0 auto;
+    padding-bottom: 25px;
 
         h2{
             font-size: 25px;
@@ -125,7 +141,7 @@ export default {
             display: flex;
             height:calc(50% - 40px);
             overflow-x:auto;
-        
+                    
 
             .card{
                 width: calc((100% / 6) - 10px);
@@ -159,6 +175,10 @@ export default {
 
                     div{
                         padding-block: 7px;
+                    }
+
+                    .cast{
+                        padding-right:5px ;
                     }
 
                     img{

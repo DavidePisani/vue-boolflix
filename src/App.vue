@@ -2,7 +2,7 @@
   <div id="app">
     <HeaderComponent @FilmsText="UserFilmText" @SeriesText="UserSeriesText"/>
     <main>
-      <MainComponent :ArrayFilm="infoFilms" :ArraySeries="infoSeries"/>
+      <MainComponent :ArrayFilm="infoFilms" :ArraySeries="infoSeries" />
     </main>
    
   </div>
