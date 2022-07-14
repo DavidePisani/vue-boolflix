@@ -25,7 +25,7 @@ export default {
 
 <style lang="scss" scoped>
 header{
-    background-color: black;
+    background-color: rgb(21, 20, 20);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,7 +46,7 @@ header{
         }
 
         button{
-            background-color: black;
+            background-color: rgb(21, 20, 20);
             color: red;
             padding: 5px;
             margin-left: 3px;

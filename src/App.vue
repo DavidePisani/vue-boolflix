@@ -44,7 +44,7 @@ export default {
 
             axios.get(this.SearchUrlFilms).then((result)=> {
               this.infoFilms = result.data.results
-              console.log(this.infoFilms)
+              
             })
       },
   //testo con + al posto dello spazio e chiamata alle API delle series 
@@ -55,7 +55,7 @@ export default {
 
             axios.get(this.SearchUrlSeries).then((result)=> {
               this.infoSeries = result.data.results
-              console.log(this.infoSeries)
+              
             })
       },
 
@@ -67,7 +67,5 @@ export default {
 
 <style lang="scss">
 @import './assets/style/common';
-  main{
-    height: calc(100vh - 80px);
-  }
+ 
 </style>

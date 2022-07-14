@@ -3,30 +3,31 @@
     <h2>FILMS</h2>
     <div class="categories">
         <!-- CARD FILM -->
-        <div class="card" v-for="film, index in ArrayFilm " :key= "'f' + index" >
-            <img v-if=" film.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + film.poster_path" :alt="film.title">
-            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="film.title">
-            <div class="card-info">
-                <h3>{{film.title}}</h3>
-                <div>{{film.original_title}}</div>
-                <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(film.original_language)" :alt="film.original_language">
-                <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(film.vote_average)}  "></i></div>
-                <div class="overview">Trama: {{film.overview}}</div>
+        <div class="card" v-for="element, index in ArrayFilm " :key= "'f' + index" >
+            <img v-if=" element.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + element.poster_path" :alt="element.title">
+            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="element.title">
+            <div @mouseenter="GetCast(element.id)" class="card-info">
+                <h3>{{element.title}}</h3>
+                <div>{{element.original_title}}</div>
+                <div v-for="name, index in CastArray " :key="index">{{name}}</div>
+                <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(element.original_language)" :alt="element.original_language">
+                <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(element.vote_average)}  "></i></div>
+                <div>Trama: {{element.overview}}</div>
             </div>
         </div>
     </div>
     <h2>SERIES</h2>
     <div class="categories">
                 <!-- CARD SERIES -->
-        <div  class="card" v-for="series, index in ArraySeries " :key= "'s' + index">
-            <img v-if=" series.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + series.poster_path" :alt="series.name">
-            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="series.name">
+        <div  class="card" v-for="element, index in ArraySeries " :key= "'s' + index">
+            <img v-if=" element.poster_path !== null " :src="'https:image.tmdb.org/t/p/w342' + element.poster_path" :alt="element.name">
+            <img v-else src='http://placehold.jp/70/050505/ff0000/300x500.png?text=POSTER%20NOT%0AFOUND' :alt="element.name">
             <div class="card-info">
-                <h3>{{series.name}}</h3>
-                <div>{{series.original_name}}</div>
-                <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(series.original_language)" :alt="series.original_language">
-                <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(series.vote_average)}  "></i></div>
-                <div class="overview">Trama: {{series.overview}}</div>
+                <h3>{{element.name}}</h3>
+                <div>{{element.original_name}}</div>
+                <img :src="'https://countryflagsapi.com/svg/' + GetRightFlag(element.original_language)" :alt="element.original_language">
+                <div><i class="fa-solid fa-star" v-for=" n in 5  " :key="n" :class=" {'star-yellow':n <= VoteWithStar(element.vote_average)}  "></i></div>
+                <div>Trama: {{element.overview}}</div>
             </div>
         </div>
     </div>
@@ -35,13 +36,20 @@
 </template>
 
 <script>
-
+    import axios from 'axios'
 export default {
     name:'MainComponent',
     props:{
         ArrayFilm: Array,
         ArraySeries: Array
     },
+
+    data(){
+        return{
+            CastArray:[]
+        }
+    },
+
     methods:{
         // funzione per modificare alcune iniziali della lingua 
         // per far si che che vengano visualizzate a schermo le bandiere
@@ -73,6 +81,26 @@ export default {
             const StarVote = star/2
             return Math.round(StarVote)   
         },
+
+        GetCast(identify){
+            this.CastArray = [];
+            axios.get(`https://api.themoviedb.org/3/movie/${identify}/credits?api_key=9b421e8c12233512d2be3ddc9ba136cd&language=it-It`).then(response => {
+                if(response.data.cast.length >= 5){
+                     for(let i = 0; i < 5; i++){
+                        this.CastArray.push(response.data.cast[i].name);
+                    }
+                     console.log('ciclo for 1') 
+                }else if(response.data.cast.length <= 4){
+                    for(let i = 0; i < response.data.cast.length; i++){
+                        this.CastArray.push(response.data.cast[i].name);
+                    }
+                    console.log('ciclo for 2') 
+                }else{
+                    this.CastArray.push("no cast found");
+                }
+                    this.CastArray;
+            })
+        }
     }
 }
 </script>
@@ -100,15 +128,15 @@ export default {
         
 
             .card{
-                width: calc((100% / 7) - 10px);
+                width: calc((100% / 6) - 10px);
                 margin-right: 10px;
                 margin-bottom: 5px;
                 flex-shrink: 0;
-                aspect-ratio: 2/3;
+                aspect-ratio: auto;
                 position: relative;
 
                 &:hover .card-info{
-                    opacity: 0.9;
+                    opacity: 1;
                 }
 
                 img{
@@ -124,7 +152,7 @@ export default {
                     right: 0;
                     left: 0;
                     opacity: 0;
-                    background-color: black;
+                    background-color: rgba($color: #000000, $alpha: 0.8);
                     color: white;
                     padding: 30px;
                     overflow-y: auto;
